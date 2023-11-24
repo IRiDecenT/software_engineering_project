@@ -3,33 +3,41 @@ import { User, Lock } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus';
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-const registerData = ref({
-    username: '',
-    password: '',
-    rePassword: ''
-})
+import { userRegister, userLogin } from '@/api/user'
+
 //控制注册与登录表单的显示， 默认显示注册
 const isRegister = ref(false)
 
-// const clearRegisterData = () => {
-//     registerData.value = {
-//         username: '',
-//         password: '',
-//         rePassword: ''
-//     }
-// }
 const router = useRouter()//路由跳转
 
 // 登陆表单
 const formLogin = ref({
-  username: '',
-  password: '',
-  agree: false
+    username: '',
+    password: '',
+    agree: false
 })
 
-const doLogin = () =>{
-    const {username, password} = formLogin.value
-    if(!username || !password){
+// 注册表单
+const formRegister = ref({
+    username: '',
+    password: '',
+    rePassword: ''
+})
+
+const clearFormRegister = () => {
+    formRegister.value.username = ''
+    formRegister.value.password = ''
+    formRegister.value.rePassword = ''
+}
+
+const clearFormLogin = () => {
+    formLogin.value.username = ''
+    formLogin.value.password = ''
+}
+
+const doLogin = async () => {
+    const { username, password } = formLogin.value
+    if (!username || !password) {
         ElMessage({
             message: '用户名或密码不能为空',
             type: 'error'
@@ -37,14 +45,57 @@ const doLogin = () =>{
         return
     }
     // 发起请求
+    let result = await userLogin({ username, password })
+    if (result.code !== 200) {
+        ElMessage({
+            message: result.msg,
+            type: 'error'
+        })
+        clearFormLogin()
+        return
+    }
+    else {
+        ElMessage({
+            message: '登录成功',
+            type: 'success'
+        })
+        router.push('/')
+    }
 
+}
 
-
-    ElMessage({
-        message: '登录成功',
-        type: 'success'
-    })
-    router.push('/')
+const doRegister = async () => {
+    const { username, password, rePassword } = formRegister.value
+    if (!username || !password || !rePassword) {
+        ElMessage({
+            message: '用户名或密码不能为空',
+            type: 'error'
+        })
+        return
+    }
+    if (password !== rePassword) {
+        ElMessage({
+            message: '两次密码不一致',
+            type: 'error'
+        })
+        return
+    }
+    // 发起请求
+    let result = await userRegister({ username, password })
+    if (result.code !== 200) {
+        ElMessage({
+            message: result.msg,
+            type: 'error'
+        })
+    }
+    else {
+        ElMessage({
+            message: '注册成功',
+            type: 'success'
+        })
+        isRegister.value = false
+    }
+    clearFormRegister()
 }
 </script>
 
@@ -62,17 +113,19 @@ const doLogin = () =>{
                         <h1 class="headtitle">注册</h1>
                     </el-form-item>
                     <el-form-item>
-                        <el-input :prefix-icon="User" placeholder="请输入用户名" v-model="registerData.username"></el-input>
+                        <el-input :prefix-icon="User" placeholder="请输入用户名" v-model="formRegister.username"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-input :prefix-icon="Lock" type="password" placeholder="请输入密码" v-model="registerData.password"></el-input>
+                        <el-input :prefix-icon="Lock" type="password" placeholder="请输入密码"
+                            v-model="formRegister.password"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-input :prefix-icon="Lock" type="password" placeholder="请输入再次密码" v-model="registerData.rePassword"></el-input>
+                        <el-input :prefix-icon="Lock" type="password" placeholder="请输入再次密码"
+                            v-model="formRegister.rePassword"></el-input>
                     </el-form-item>
                     <!-- 注册按钮 -->
                     <el-form-item>
-                        <el-button class="button" type="primary" auto-insert-space>
+                        <el-button class="button" type="primary" auto-insert-space @click="doRegister">
                             注册
                         </el-button>
                     </el-form-item>
@@ -95,7 +148,8 @@ const doLogin = () =>{
                         <el-input :prefix-icon="User" placeholder="请输入用户名" v-model="formLogin.username"></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-input name="password" :prefix-icon="Lock" type="password" placeholder="请输入密码" v-model="formLogin.password"></el-input>
+                        <el-input name="password" :prefix-icon="Lock" type="password" placeholder="请输入密码"
+                            v-model="formLogin.password"></el-input>
                     </el-form-item>
                     <el-form-item class="flex">
                         <div class="flex">
@@ -120,19 +174,19 @@ const doLogin = () =>{
 
 <style lang="scss" scoped>
 .box-card {
-  width: 480px;
-  margin-left: auto;
-  margin-right: auto;
+    width: 480px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .logo {
-        height: auto;
-        margin-bottom: 100px;
-        margin-left: 50px;
-        margin-right: auto;
-        width: 350px;
-        height: auto;
-    }
+    height: auto;
+    margin-bottom: 100px;
+    margin-left: 50px;
+    margin-right: auto;
+    width: 350px;
+    height: auto;
+}
 
 /* 样式 */
 .login-page {
@@ -165,7 +219,8 @@ const doLogin = () =>{
             justify-content: space-between;
         }
     }
-    .headtitle{
+
+    .headtitle {
         font-size: 30px;
         font-weight: 700;
         color: #131212;
@@ -174,5 +229,4 @@ const doLogin = () =>{
         margin-left: auto;
         margin-right: auto;
     }
-}
-</style>
+}</style>
