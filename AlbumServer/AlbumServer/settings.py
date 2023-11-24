@@ -38,16 +38,18 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'myserver.apps.MyserverConfig',
+    'corsheaders', # 跨域应用
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware', # 跨域中间件
 ]
 
 ROOT_URLCONF = 'AlbumServer.urls'
@@ -132,7 +134,17 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ALLOW_ALL_ORIGINS = [
-    'http://localhost:5173',
-    'http://127.0.0.1:5173',
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+]
+
+COR_ALLOWED_METHODS = [
+    'GET',
+    'POST',
+    'OPTIONS',
+]
+
+CORS_ALLOWED_HEADERS = [
+    'Content-Type',
 ]
