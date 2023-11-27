@@ -148,3 +148,5 @@ COR_ALLOWED_METHODS = [
 CORS_ALLOWED_HEADERS = [
     'Content-Type',
 ]
+
+BASE_URL = 'http://localhost:8000'

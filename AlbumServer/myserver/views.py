@@ -5,7 +5,6 @@ import json
 # Create your views here.
 
 
-#requst.POST是类似字典类型对象，可以通过get方法获取键值对
 def login(request):
     if request.method == 'POST':
         data = json.loads(request.body)
