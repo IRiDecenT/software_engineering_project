@@ -13,8 +13,14 @@ def login(request):
         print(username, password)
         try:
             user = models.User.objects.get(username=username)
+            print(user.username, user.password)
             if user.password == password:
-                return JsonResponse({'code': 200, 'msg': '登录成功'})
+                ret = {
+                    'code': 200,
+                    'msg': '登录成功',
+                    'id': user.id,
+                }
+                return JsonResponse(ret)
             else:
                 return JsonResponse({'code': 400, 'msg': '密码错误'})
         except:
@@ -36,6 +42,28 @@ def register(request):
             user = models.User(username=username, password=password)
             user.save()
             return JsonResponse({'code': 200, 'msg': '注册成功'})
+    else:
+        return JsonResponse({'code': 400, 'msg': '请求方式错误'})
+
+
+def get_UserInfo(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        id = data['id']
+        print(id)
+        try:
+            user = models.User.objects.get(id=id)
+            ret = {
+                'code': 200,
+                'msg': '获取成功',
+                'id': user.id,
+                'username': user.username,
+                'password': user.password,
+                'avator': user.avatar
+            }
+            return JsonResponse(ret)
+        except:
+            return JsonResponse({'code': 400, 'msg': '用户不存在'})
     else:
         return JsonResponse({'code': 400, 'msg': '请求方式错误'})
 

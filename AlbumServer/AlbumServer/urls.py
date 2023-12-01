@@ -16,10 +16,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from myserver.views import login, register
+from myserver.views import login, register, get_UserInfo
+from django.conf.urls.static import static
+from django.conf import settings
 
+
+# http://127.0.0.1:8000/static/avatars/defaultAvatar.jpg 可以访问到django的静态文件
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', login),
     path('register/', register),
-]
+    path('getUserInfo/', get_UserInfo),
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
