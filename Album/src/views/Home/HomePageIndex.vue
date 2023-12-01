@@ -10,7 +10,10 @@ import {
 	SwitchButton,
 	CaretBottom,
 } from '@element-plus/icons-vue'
+import { useRoute, useRouter } from 'vue-router';
 // const currentDate = ref(new Date())
+const route = useRoute()
+const router = useRouter()
 const searchInfo = ref('')
 const imageData = ref(
 	[
@@ -128,12 +131,15 @@ const imageData = ref(
 				poster: 'YR',
 			}
 		],
-
 	]
 )
 
+const uid = route.params.id
+console.log(uid)
 
-
+const toDemo = () => {
+	router.push(`/demo/uid=${uid}`)
+}
 
 </script>
 
@@ -149,7 +155,7 @@ const imageData = ref(
 					</el-icon>
 					<span>首页</span>
 				</el-menu-item>
-				<el-menu-item>
+				<el-menu-item  @click="toDemo">
 					<el-icon>
 						<Promotion />
 					</el-icon>
@@ -215,7 +221,7 @@ const imageData = ref(
 			</el-header>
 			<!-- 中间区域 -->
 			<el-main>
-				<div style="width: auto; height: auto;border: 2px solid red;">
+				<div style="width: auto; height: auto;">
 					<el-row v-for="(col, index) in imageData" :key="index" span="1" :gutter="20" style="margin-bottom: 10px;">
 						<el-col v-for="(image, index) in col" :key="image.id" :span="4" :offset="index > 0 ? 2 : 1">
 							<el-card :body-style="{ padding: '0px' }" class="elcard">
@@ -333,6 +339,7 @@ const imageData = ref(
 }
 
 .image {
+
 	width: 100%;
 	display: block;
 }
