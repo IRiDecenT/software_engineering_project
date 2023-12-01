@@ -6,7 +6,7 @@ import UserInfo from "@/views/UserInfo/UserInfoIndex.vue"
 
 const routes = [
     {    path: '/login', component: Login },
-    {    path: '/', component: HomePage },
+    {    path: '/index/:id', component: HomePage },
     {    path: '/userinfo', component: UserInfo },
 ]
 

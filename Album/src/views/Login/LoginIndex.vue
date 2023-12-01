@@ -59,7 +59,7 @@ const doLogin = async () => {
             message: '登录成功',
             type: 'success'
         })
-        router.push('/')
+        router.replace(`/index/${result.id}`)
     }
 
 }
