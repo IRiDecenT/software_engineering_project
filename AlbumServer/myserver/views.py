@@ -47,7 +47,7 @@ def register(request):
 
 
 def get_UserInfo(request):
-    if request.method == 'POST':
+    if request.method == 'GET':
         data = json.loads(request.body)
         id = data['id']
         print(id)
@@ -56,9 +56,7 @@ def get_UserInfo(request):
             ret = {
                 'code': 200,
                 'msg': '获取成功',
-                'id': user.id,
                 'username': user.username,
-                'password': user.password,
                 'avator': user.avatar
             }
             return JsonResponse(ret)
@@ -67,3 +65,19 @@ def get_UserInfo(request):
     else:
         return JsonResponse({'code': 400, 'msg': '请求方式错误'})
 
+def createAlbum(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        name = data['name']
+        discription = data['discription']
+        user_id = data['uid']
+        print(name, discription, user_id)
+        try:
+            user = models.User.objects.get(id=user_id)
+            album = models.Album(name=name, discription=discription, user=user)
+            album.save()
+            return JsonResponse({'code': 200, 'msg': '创建成功'})
+        except:
+            return JsonResponse({'code': 400, 'msg': '用户不存在'})
+    else:
+        return JsonResponse({'code': 400, 'msg': '请求方式错误'})
