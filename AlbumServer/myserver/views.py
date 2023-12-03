@@ -45,19 +45,18 @@ def register(request):
     else:
         return JsonResponse({'code': 400, 'msg': '请求方式错误'})
 
-
-def get_UserInfo(request):
+# get请求没有body，所以要用url传参
+def get_UserInfo(request, id):
     if request.method == 'GET':
-        data = json.loads(request.body)
-        id = data['id']
-        print(id)
         try:
             user = models.User.objects.get(id=id)
+            # 通过userid获取xx用户的相册信息
+            # 把用户信息和相册信息返回
             ret = {
                 'code': 200,
                 'msg': '获取成功',
                 'username': user.username,
-                'avator': user.avatar
+                'avatar': user.avatar,
             }
             return JsonResponse(ret)
         except:
@@ -78,6 +77,30 @@ def createAlbum(request):
             album.save()
             return JsonResponse({'code': 200, 'msg': '创建成功'})
         except:
+            return JsonResponse({'code': 400, 'msg': '用户不存在'})
+    else:
+        return JsonResponse({'code': 400, 'msg': '请求方式错误'})
+
+def getAlbums(request, id):
+    if request.method == 'GET':
+        try:
+            user = models.User.objects.get(id = id)
+            print(user.username)
+            # 通过userid获取xx用户的相册信息
+            all_album = models.Album.objects.filter(user=user)
+            album_list = []
+            for album in all_album:
+                album_list.append({
+                    'id': album.id,
+                    'name': album.name,
+                    'discription': album.discription,
+                    'create_time': album.create_time,
+                    'forePage': album.forePage
+                })
+                # JsonResponse只能返回字典，所以要把album_list设置成safe=False
+            return JsonResponse(album_list, safe=False)
+        except Exception as e:
+            print(type(e), e)
             return JsonResponse({'code': 400, 'msg': '用户不存在'})
     else:
         return JsonResponse({'code': 400, 'msg': '请求方式错误'})
