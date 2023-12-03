@@ -3,7 +3,7 @@
 ### 1. 登陆
 
 1. 方法：POST
-2. api：/login/
+2. api：login/
 3. JSON格式http报文，请求正文组成：
 
 | username | password |
@@ -25,13 +25,34 @@
 ### 2. 注册
 
 1. 方法：POST
-2. api：/register
+2. api：register/
 3. JSON格式http报文，请求正文组成：
 
 | Username | password |
 | -------- | -------- |
-| 用户名   |          |
+| 用户名   | 密码     |
+
+4. 返回json格式的响应
+
+```json
+{
+	"code": 200
+    "msg": “注册成功”
+}
+```
+
+
 
 ### 3. 获取用户信息
 
-1. 
+1. 方法：GET
+
+2. api：getUserInfo/
+
+3. JSON格式报文 正文例如
+
+   ```json
+   { "id" = 1 }
+   ```
+
+4. 
