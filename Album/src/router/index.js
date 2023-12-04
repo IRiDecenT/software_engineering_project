@@ -5,12 +5,14 @@ import HomePage from "@/views/Home/HomePageIndex.vue"
 import UserInfo from "@/views/UserInfo/UserInfoIndex.vue"
 import Demo from "@/views/Demo/Demo1Index.vue"
 
+
+// 查询参数（如 ?uid=1）不需要在路由配置中定义。
 const routes = [
     {    path: '/login', component: Login },
-    {    path: '/index/uid=:id', component: HomePage },
+    {    path: '/index', component: HomePage },
     {    path: '/userinfo', component: UserInfo },
     {    path: '/', redirect: '/login' },
-    {    path: '/demo/uid=:id', component: Demo },
+    {    path: '/demo', component: Demo },
 ]
 
 const router = createRouter({

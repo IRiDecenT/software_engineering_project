@@ -11,6 +11,7 @@ import {
 	CaretBottom,
 } from '@element-plus/icons-vue'
 import { useRoute, useRouter } from 'vue-router';
+import { getUserInfo } from '@/api/user'
 // const currentDate = ref(new Date())
 const route = useRoute()
 const router = useRouter()
@@ -134,12 +135,27 @@ const imageData = ref(
 	]
 )
 
-const uid = route.params.id
+// const uid = route.params.id
+const uid = route.query.uid
 console.log(uid)
 
 const toDemo = () => {
-	router.push(`/demo/uid=${uid}`)
+	router.push(`/demo?uid=${uid}`)
 }
+
+const toInfo = () =>{
+	router.push(`/userinfo?uid=${uid}`)
+}
+
+let avatar = ref(null)
+async function getUserData(){
+	let result = await getUserInfo(uid)
+	console.log(result)
+	avatar.value = result.avatar
+}
+
+getUserData()
+
 
 </script>
 
@@ -204,7 +220,7 @@ const toDemo = () => {
 				<el-button round style="margin-right: auto;">搜索</el-button>
 				<el-dropdown placement="bottom-end">
 					<span class="el-dropdown__box">
-						<el-avatar src="/src/assets/avator1.JPG" />
+						<el-avatar @click="toInfo" :src="avatar" />
 						<el-icon>
 							<CaretBottom />
 						</el-icon>
