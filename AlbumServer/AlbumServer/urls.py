@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from myserver.views import login, register, get_UserInfo, createAlbum, getAlbums
+from myserver.views import login, register, get_UserInfo, createAlbum, getAlbums, updateAvator, uploadPhotos, getPhotos
 from django.conf.urls.static import static
 from django.conf import settings
 
@@ -29,4 +29,7 @@ urlpatterns = [
     path('getUserInfo/<int:id>/', get_UserInfo),
     path('createAlbum/', createAlbum),
     path('getAlbums/<int:id>/', getAlbums),
+    path('updateAvatar/', updateAvator),
+    path('uploadPhotos/', uploadPhotos),
+    path('getPhotos/<int:aid>/', getPhotos)
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

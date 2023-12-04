@@ -154,3 +154,7 @@ CORS_ALLOWED_HEADERS = [
 ]
 
 BASE_URL = 'http://localhost:8000'
+
+
+# only for test
+SYSTEM_PATH = "/Users/yr/code/software_engineering/software_engineering_project/AlbumServer/myserver/static/"
