@@ -59,7 +59,8 @@ const doLogin = async () => {
             message: '登录成功',
             type: 'success'
         })
-        router.replace(`/index?uid=${result.id}`)
+        //router.replace(`/index?uid=${result.id}`)
+        router.replace(`/main?uid=${result.id}`)
     }
 
 }
@@ -117,11 +118,11 @@ const doRegister = async () => {
                     </el-form-item>
                     <el-form-item>
                         <el-input :prefix-icon="Lock" type="password" placeholder="请输入密码"
-                            v-model="formRegister.password"></el-input>
+                            v-model="formRegister.password" show-password ></el-input>
                     </el-form-item>
                     <el-form-item>
                         <el-input :prefix-icon="Lock" type="password" placeholder="请输入再次密码"
-                            v-model="formRegister.rePassword"></el-input>
+                            v-model="formRegister.rePassword" show-password ></el-input>
                     </el-form-item>
                     <!-- 注册按钮 -->
                     <el-form-item>
@@ -149,7 +150,7 @@ const doRegister = async () => {
                     </el-form-item>
                     <el-form-item>
                         <el-input name="password" :prefix-icon="Lock" type="password" placeholder="请输入密码"
-                            v-model="formLogin.password"></el-input>
+                            v-model="formLogin.password" show-password ></el-input>
                     </el-form-item>
                     <el-form-item class="flex">
                         <div class="flex">
@@ -174,7 +175,7 @@ const doRegister = async () => {
 
 <style lang="scss" scoped>
 .box-card {
-    width: 480px;
+    width: 420px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -182,10 +183,11 @@ const doRegister = async () => {
 .logo {
     height: auto;
     margin-bottom: 100px;
-    margin-left: 50px;
+    margin-left: auto;
     margin-right: auto;
     width: 350px;
     height: auto;
+
 }
 
 /* 样式 */
@@ -204,7 +206,7 @@ const doRegister = async () => {
         flex-direction: column;
         justify-content: center;
         user-select: none;
-
+        align-items: center;
         .title {
             margin: 0 auto;
         }
