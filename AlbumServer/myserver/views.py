@@ -15,7 +15,6 @@ def login(request):
         print(username, password)
         try:
             user = models.User.objects.get(username=username)
-            print(user.username, user.password)
             if user.password == password:
                 ret = {
                     'code': 200,
